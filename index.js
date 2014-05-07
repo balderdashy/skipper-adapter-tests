@@ -28,21 +28,21 @@ module.exports = function runner (opts) {
   var mocha = new Mocha({ bail: true });
 
   // Setup `before` and `after` lifecycle to keep them servers flowin'
-  mocha.addFile(path.join('lib','lifecycle'));
+  mocha.addFile(path.resolve(__dirname, path.join('lib','lifecycle')));
 
   // Load the tests.
   fs.readdirSync(path.resolve(__dirname,'tests')).filter(function(filename) {
     return filename.match(/\.js$/);
   }).forEach(function(file) {
     mocha.addFile(
-      path.join('tests', file)
+      path.resolve(__dirname, path.join('tests', file))
     );
   });
   fs.readdirSync(path.resolve(__dirname,'tests/base')).filter(function(filename) {
     return filename.match(/\.js$/);
   }).forEach(function(file) {
     mocha.addFile(
-      path.join('tests/base', file)
+      path.resolve(__dirname, path.join('tests/base', file))
     );
   });
 
