@@ -5,7 +5,7 @@ describe('skipper usage', function() {
     // Set up a route which listens to uploads
     app.post('/upload', function (req, res, next) {
       assert(_.isFunction(req.file));
-      req.file('avatar').upload(adapter.receive, function (err, files) {
+      req.file('avatar').upload(adapter.receiver(), function (err, files) {
         if (err) throw err;
         return res.end();
       });
