@@ -1,14 +1,14 @@
 {
-  "name": "skipper-receiver-tests",
+  "name": "skipper-adapter-tests",
   "version": "0.0.0",
-  "description": "Generic acceptance tests for Skipper receivers",
+  "description": "Generic acceptance tests for Skipper adapters",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/balderdashy/skipper-receiver-tests.git"
+    "url": "git://github.com/balderdashy/skipper-adapter-tests.git"
   },
   "keywords": [
     "skipper",
@@ -22,14 +22,15 @@
   "author": "Mike McNeil",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/balderdashy/skipper-receiver-tests/issues"
+    "url": "https://github.com/balderdashy/skipper-adapter-tests/issues"
   },
-  "homepage": "https://github.com/balderdashy/skipper-receiver-tests",
+  "homepage": "https://github.com/balderdashy/skipper-adapter-tests",
   "devDependencies": {
     "mocha": "~1.18.2"
   },
   "dependencies": {
     "lodash": "~2.4.1",
-    "fs-extra": "~0.8.1"
+    "fs-extra": "~0.8.1",
+    "skipper": "~0.1.2"
   }
 }

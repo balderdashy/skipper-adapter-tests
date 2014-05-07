@@ -1,4 +1,4 @@
-skipper-receiver-tests
+skipper-adapter-tests
 ============
 
-Generic acceptance tests for Skipper receivers
+Generic acceptance tests for Skipper adapters
