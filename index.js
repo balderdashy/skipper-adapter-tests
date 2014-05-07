@@ -18,8 +18,12 @@ var Mocha = require('mocha');
 module.exports = function runner (opts) {
   opts = opts || {};
 
-  // First, load the tests.
   var mocha = new Mocha();
+
+  // Setup `before` and `after` lifecycle to keep them servers flowin'
+  mocha.addFile(path.join('lib','lifecycle'));
+
+  // Load the tests.
   fs.readdirSync(path.resolve(__dirname,'tests')).filter(function(filename) {
     return filename.match(/\.js$/);
   }).forEach(function(file) {
@@ -27,9 +31,6 @@ module.exports = function runner (opts) {
       path.join('tests', file)
     );
   });
-
-  // Setup `before` and `after` lifecycle to keep them servers flowin'
-  mocha.addFile(path.join('lib','lifecycle'));
 
   // Now, run the tests.
   mocha.run(function(failures) {
