@@ -18,7 +18,14 @@ var Mocha = require('mocha');
 module.exports = function runner (opts) {
   opts = opts || {};
 
-  var mocha = new Mocha();
+
+  // Expose adapter as a global
+  global['adapter'] = typeof opts.module === 'string' ? require(opts.module) : opts.module;
+
+  // Instantiate adapter
+  global['adapter'] = global['adapter']();
+
+  var mocha = new Mocha({ bail: true });
 
   // Setup `before` and `after` lifecycle to keep them servers flowin'
   mocha.addFile(path.join('lib','lifecycle'));
@@ -29,6 +36,13 @@ module.exports = function runner (opts) {
   }).forEach(function(file) {
     mocha.addFile(
       path.join('tests', file)
+    );
+  });
+  fs.readdirSync(path.resolve(__dirname,'tests/base')).filter(function(filename) {
+    return filename.match(/\.js$/);
+  }).forEach(function(file) {
+    mocha.addFile(
+      path.join('tests/base', file)
     );
   });
 

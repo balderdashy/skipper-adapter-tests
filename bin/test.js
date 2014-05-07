@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-require('../')();
+require('../')({
+  module: 'skipper-disk'
+});

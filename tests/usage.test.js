@@ -5,23 +5,31 @@ describe('skipper usage', function() {
     // Set up a route which listens to uploads
     app.post('/upload', function (req, res, next) {
       assert(_.isFunction(req.file));
-      var foo = req.file('foo');
-      return res.end();
+      req.file('avatar').upload(adapter.receive, function (err, files) {
+        if (err) throw err;
+        return res.end();
+      });
     });
 
     var URL = baseurl+'/upload';
 
-    // Build an HTTP request with an attached multipart form upload.
-    var httpRequest =
-    request.post(URL, function(err, response, body) {
-      if (err) return done(err);
-      else return done();
-    });
+    // Build an HTTP request with attached multipart form upload(s).
+    var httpRequest = request.post(URL, onResponse);
+    var form = httpRequest.form();
+    form.append('foo', 'hello');
+    form.append('bar', 'there');
+    form.append('avatar', fsx.createReadStream( fixtures.files[0].path ));
 
-    // var form = httpRequest.form();
-    // form.append('foo', 'hello');
-    // form.append('bar', 'there');
-    // form.append('avatar', fsx.createReadStream( pathToFile ));
+    // Then check that it worked.
+    function onResponse (err, response, body) {
+      if (err) return done(err);
+      else if (response.statusCode > 300) {
+        return done(body || response.statusCode);
+      }
+      else {
+        done();
+      }
+    }
 
   });
 
