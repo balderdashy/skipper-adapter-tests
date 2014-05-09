@@ -40,16 +40,13 @@ describe('req.body ::', function() {
   });
 
 
-  var smallFile;
-  var pathToSmallFile;
-  var srcFileContents;
-  it('loads the dummy file to upload', function () {
-    smallFile = suite.srcFiles[0];
-    pathToSmallFile = smallFile.path;
-    srcFileContents = fsx.createReadStream(pathToSmallFile);
-  });
 
   it('sends a multi-part file upload request', function(done) {
+
+    // Create a readable binary stream to upload
+    var smallFile = suite.srcFiles[0];
+    var pathToSmallFile = smallFile.path;
+    var fileStreamToUpload = fsx.createReadStream(pathToSmallFile);
 
     // Builds an HTTP request
     var httpRequest = Uploader({
@@ -60,7 +57,7 @@ describe('req.body ::', function() {
     var form = httpRequest.form();
     form.append('foo', 'hello');
     form.append('bar', 'there');
-    form.append('avatar', srcFileContents);
+    form.append('avatar', fileStreamToUpload);
 
   });
 
@@ -74,8 +71,7 @@ describe('req.body ::', function() {
   it('should have uploaded a file to `suite.outputDir`', function(done) {
 
     adapter.read = function (pathToFile, cb) {
-      console.log(pathToFile);
-      return fsx.readFile(pathToFile, 'utf8', cb);
+      return fsx.readFile(pathToFile, cb);
     };
 
     adapter.ls = function (dirpath, cb) {
@@ -90,8 +86,9 @@ describe('req.body ::', function() {
       // Check that its contents are correct
       adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function (err, uploadedFileContents) {
         assert(!err);
-        console.log('****',uploadedFileContents.toString(), 'vs',srcFileContents.toString());
+        var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());
+        done();
       });
     });
 
