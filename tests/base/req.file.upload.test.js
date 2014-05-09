@@ -45,7 +45,7 @@ describe('req.file(...).upload(...) ::', function() {
 
 
 
-  it('should have uploaded a file to `suite.outputDir`', function() {
+  it('should have uploaded a file to `suite.outputDir`', function(done) {
 
     // Check that a file landed
     adapter.ls(suite.outputDir.path, function (err, filesUploaded) {
