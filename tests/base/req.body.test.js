@@ -70,14 +70,6 @@ describe('req.body ::', function() {
 
   it('should have uploaded a file to `suite.outputDir`', function(done) {
 
-    adapter.read = function (pathToFile, cb) {
-      return fsx.readFile(pathToFile, cb);
-    };
-
-    adapter.ls = function (dirpath, cb) {
-      return fsx.readdir(dirpath, cb);
-    };
-
     // Check that a file landed
     adapter.ls(suite.outputDir.path, function (err, filesUploaded) {
       assert(!err);
