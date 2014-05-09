@@ -13,7 +13,7 @@ var fsx = require('fs-extra');
 
 
 
-describe('req.body ::', function() {
+describe.only('req.body ::', function() {
   var suite = Lifecycle();
   before(suite.setup);
   after(suite.teardown);
@@ -27,11 +27,10 @@ describe('req.body ::', function() {
     suite.app.post('/upload', function(req, res) {
       bodyParamsThatWereAccessible = _.cloneDeep(req.body);
 
-      var OUTPUT_PATH = req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR;
-
       req.file('avatar')
         .upload(adapter.receive({
-          id: OUTPUT_PATH
+          dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
+          filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
         }), function(err, files) {
           if (err) res.send(500, err);
           res.send(200);
@@ -72,12 +71,12 @@ describe('req.body ::', function() {
 
     // Check that a file landed
     adapter.ls(suite.outputDir.path, function (err, filesUploaded) {
-      assert(!err);
+      if (err) return done(err);
       assert(filesUploaded.length === 1, 'a file should exist at '+suite.outputDir.path);
 
       // Check that its contents are correct
       adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function (err, uploadedFileContents) {
-        assert(!err);
+        if (err) return done(err);
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());
         done();

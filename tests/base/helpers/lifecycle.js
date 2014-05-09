@@ -60,6 +60,8 @@ module.exports = function() {
       // Provide a default outputPath for testing purposes
       // (gets used by the test receiver to write the test file to disk in each suite)
       public.app.use(function(req, res, next) {
+        req.__FILE_PARSER_TESTS__DIRNAME__AVATAR = outputDir.path;
+        req.__FILE_PARSER_TESTS__FILENAME__AVATAR = 'avatar.jpg';
         req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR = path.join(outputDir.path, 'avatar.jpg');
         next();
       });
