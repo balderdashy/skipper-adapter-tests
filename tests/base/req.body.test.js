@@ -30,7 +30,7 @@ describe('req.body ::', function() {
       var OUTPUT_PATH = req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR;
 
       req.file('avatar')
-        .upload(adapter.receiver({
+        .upload(adapter.receive({
           id: OUTPUT_PATH
         }), function(err, files) {
           if (err) res.send(500, err);
@@ -40,6 +40,14 @@ describe('req.body ::', function() {
   });
 
 
+  var smallFile;
+  var pathToSmallFile;
+  var srcFileContents;
+  it('loads the dummy file to upload', function () {
+    smallFile = suite.srcFiles[0];
+    pathToSmallFile = smallFile.path;
+    srcFileContents = fsx.createReadStream(pathToSmallFile);
+  });
 
   it('sends a multi-part file upload request', function(done) {
 
@@ -50,11 +58,9 @@ describe('req.body ::', function() {
 
     // Attaches a multi-part form upload to the HTTP request.,
     var form = httpRequest.form();
-    var smallFile = suite.srcFiles[0];
-    var pathToSmallFile = smallFile.path;
     form.append('foo', 'hello');
     form.append('bar', 'there');
-    form.append('avatar', fsx.createReadStream(pathToSmallFile));
+    form.append('avatar', srcFileContents);
 
   });
 
@@ -65,16 +71,30 @@ describe('req.body ::', function() {
   });
 
 
-  it('should have uploaded a file to `suite.outputDir`', function() {
+  it('should have uploaded a file to `suite.outputDir`', function(done) {
+
+    adapter.read = function (pathToFile, cb) {
+      console.log(pathToFile);
+      return fsx.readFile(pathToFile, 'utf8', cb);
+    };
+
+    adapter.ls = function (dirpath, cb) {
+      return fsx.readdir(dirpath, cb);
+    };
 
     // Check that a file landed
-    var filesUploaded = fsx.readdirSync(suite.outputDir.path);
-    assert(filesUploaded.length === 1, 'a file should exist at '+suite.outputDir.path);
+    adapter.ls(suite.outputDir.path, function (err, filesUploaded) {
+      assert(!err);
+      assert(filesUploaded.length === 1, 'a file should exist at '+suite.outputDir.path);
 
-    // Check that its contents are correct
-    var uploadedFileContents = fsx.readFileSync(path.join(suite.outputDir.path, filesUploaded[0]));
-    var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
-    assert(uploadedFileContents.toString() === srcFileContents.toString());
+      // Check that its contents are correct
+      adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function (err, uploadedFileContents) {
+        assert(!err);
+        console.log('****',uploadedFileContents.toString(), 'vs',srcFileContents.toString());
+        assert(uploadedFileContents.toString() === srcFileContents.toString());
+      });
+    });
+
   });
 
 });
