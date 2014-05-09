@@ -23,7 +23,7 @@ module.exports = function runner (opts) {
   global['adapter'] = typeof opts.module === 'string' ? require(opts.module) : opts.module;
 
   // Instantiate adapter
-  global['adapter'] = global['adapter']();
+  global['adapter'] = global['adapter'](opts);
 
   var mocha = new Mocha({ bail: true });
 
