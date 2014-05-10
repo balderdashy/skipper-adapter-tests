@@ -27,7 +27,8 @@ module.exports = function runner (opts) {
 
   var mocha = new Mocha({
     bail: true,
-    timeout: 10000
+    timeout: 180000, // (3 minutes- b/c network you know)
+    reporter: 'spec'
   });
 
   // Setup `before` and `after` lifecycle to keep them servers flowin'

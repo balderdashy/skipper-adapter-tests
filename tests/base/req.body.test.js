@@ -13,7 +13,7 @@ var fsx = require('fs-extra');
 
 
 
-describe('req.body ::', function() {
+describe('this adapter\'s impact on `req.body` ::', function() {
   var suite = Lifecycle();
   before(suite.setup);
   after(suite.teardown);

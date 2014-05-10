@@ -1,4 +1,4 @@
-describe('skipper usage', function() {
+describe('this adapter', function() {
 
   it('should allow a file to be uploaded', function(done) {
 
