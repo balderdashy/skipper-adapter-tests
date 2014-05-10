@@ -4,7 +4,9 @@ describe.only('when some big files start coming in, this adapter', function() {
     // Set up a route which listens to uploads
     app.post('/upload', function (req, res, next) {
       assert(_.isFunction(req.file));
-      req.file('avatar').upload(adapter.receive(), function (err, files) {
+      req.file('avatar').upload(adapter.receive({
+        maxBytes: 50000000 // 50 MB
+      }), function (err, files) {
         if (err) throw err;
         res.statusCode = 200;
         return res.end();
