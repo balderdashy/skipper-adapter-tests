@@ -8,17 +8,17 @@
  */
 module.exports = function (req, res) {
 
-	var OUTPUT_PATH = req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR;
-	var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
+  var OUTPUT_PATH = req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR;
+  var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
 
-	var receiver__ = adapter.receiver({
-		maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
-		dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
+  var receiver__ = adapter.receive({
+    maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
+    dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
     filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
-	});
+  });
 
-	req.file('avatar').upload(receiver__, function (err, files) {
-		if (err) return res.send(500,err);
-		return res.send(200);
-	});
+  req.file('avatar').upload(receiver__, function (err, files) {
+    if (err) return res.send(500,err);
+    return res.send(200);
+  });
 };

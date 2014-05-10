@@ -16,23 +16,23 @@
 
 module.exports = function (req, res) {
 
-	var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
+  var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
 
 
-	var receiver__ = adapter.receiver({
-		maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
-		dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
+  var receiver__ = adapter.receive({
+    maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
+    dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
     filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
-	});
+  });
 
-	req.file('avatar').pipe( receiver__ );
+  req.file('avatar').pipe( receiver__ );
 
-	receiver__.on('finish', function allFilesUploaded (files) {
-		res.send(200);
-	});
-	receiver__.on('error', function unableToUpload (err) {
-		res.send(500, err);
-	});
+  receiver__.on('finish', function allFilesUploaded (files) {
+    res.send(200);
+  });
+  receiver__.on('error', function unableToUpload (err) {
+    res.send(500, err);
+  });
 
 };
 
