@@ -25,7 +25,10 @@ module.exports = function runner (opts) {
   // Instantiate adapter
   global['adapter'] = global['adapter'](opts);
 
-  var mocha = new Mocha({ bail: true });
+  var mocha = new Mocha({
+    bail: true,
+    timeout: 10000
+  });
 
   // Setup `before` and `after` lifecycle to keep them servers flowin'
   mocha.addFile(path.resolve(__dirname, path.join('lib','lifecycle')));
