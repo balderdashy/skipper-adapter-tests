@@ -11,10 +11,8 @@ describe('this adapter', function() {
       });
     });
 
-    var URL = baseurl+'/upload';
-
     // Build an HTTP request with attached multipart form upload(s).
-    var httpRequest = request.post(URL, onResponse);
+    var httpRequest = request.post(baseurl+'/upload', onResponse);
     var form = httpRequest.form();
     form.append('foo', 'hello');
     form.append('bar', 'there');
