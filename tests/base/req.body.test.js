@@ -13,7 +13,7 @@ var fsx = require('fs-extra');
 
 
 
-describe.only('req.body ::', function() {
+describe('req.body ::', function() {
   var suite = Lifecycle();
   before(suite.setup);
   after(suite.teardown);
@@ -70,12 +70,12 @@ describe.only('req.body ::', function() {
   it('should have uploaded a file to `suite.outputDir`', function(done) {
 
     // Check that a file landed
-    adapter.ls(suite.outputDir.path, function (err, filesUploaded) {
+    adapter.ls(suite.outputDir.path, function(err, filesUploaded) {
       if (err) return done(err);
-      assert(filesUploaded.length === 1, 'a file should exist at '+suite.outputDir.path);
+      assert(filesUploaded.length === 1, 'a file should exist at ' + suite.outputDir.path);
 
       // Check that its contents are correct
-      adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function (err, uploadedFileContents) {
+      adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function(err, uploadedFileContents) {
         if (err) return done(err);
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());

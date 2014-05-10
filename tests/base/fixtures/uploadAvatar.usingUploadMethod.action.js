@@ -13,7 +13,8 @@ module.exports = function (req, res) {
 
 	var receiver__ = adapter.receiver({
 		maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
-		id: OUTPUT_PATH
+		dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
+    filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
 	});
 
 	req.file('avatar').upload(receiver__, function (err, files) {

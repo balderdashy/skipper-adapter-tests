@@ -16,13 +16,13 @@
 
 module.exports = function (req, res) {
 
-	var OUTPUT_PATH = req.__FILE_PARSER_TESTS__OUTPUT_PATH__AVATAR;
 	var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
 
 
 	var receiver__ = adapter.receiver({
 		maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
-		id: OUTPUT_PATH
+		dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
+    filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
 	});
 
 	req.file('avatar').pipe( receiver__ );
