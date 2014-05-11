@@ -14,20 +14,30 @@ describe.only('when some big files start coming in, this adapter', function() {
     });
   });
 
-  it('should work properly with 2 simultaneous requests with decent-sized (1.5MB) files', function(done) {
-    this.slow(900000);// (15 minutes)
-    require('async').each(_.range(2), toUploadAFile(1.5), done);
-  });
+  // it('should work properly with 2 simultaneous requests with decent-sized (1.5MB) files', function(done) {
+  //   this.slow(900000);// (15 minutes)
+  //   require('async').each(_.range(2), toUploadAFile(1.5), done);
+  // });
 
-  it('should work properly with 2 simultaneous, "well-endowed" (4MB) requests', function(done) {
-    this.slow(900000);// (15 minutes)
-    require('async').each(_.range(2), toUploadAFile(4), done);
-  });
+  // it('should work properly with 2 simultaneous, "well-endowed" (4MB) requests', function(done) {
+  //   this.slow(900000);// (15 minutes)
+  //   require('async').each(_.range(2), toUploadAFile(4), done);
+  // });
 
-  it('should work properly with 2 simultaneous requests with 10MB file attachments', function(done) {
-    this.slow(900000);// (15 minutes)
-    require('async').each(_.range(2), toUploadAFile(10), done);
-  });
+  // it('should work properly with 1 request with a 10MB file attachment', function(done) {
+  //   this.slow(900000);// (15 minutes)
+  //   require('async').each(_.range(1), toUploadAFile(10), done);
+  // });
+
+  // it('should work properly with 1 request with a 25MB file attachment', function(done) {
+  //   this.slow(900000);// (15 minutes)
+  //   require('async').each(_.range(1), toUploadAFile(25), done);
+  // });
+
+  // it('should work properly with 2 simultaneous requests with big ass (10MB) file attachments.', function(done) {
+  //   this.slow(900000);// (15 minutes)
+  //   require('async').each(_.range(2), toUploadAFile(10), done);
+  // });
 
   it('should work properly with 2 simultaneous requests with big ass (25MB) file attachments.', function(done) {
     this.slow(900000);// (15 minutes)
@@ -49,7 +59,10 @@ function toUploadAFile (MB) {
    * form upload(s), checking that everything worked.
    */
   return function uploadFile(i, cb) {
-    var httpRequest = request.post(baseurl+'/upload', onResponse);
+    var httpRequest = request.post({
+      timeout: (15*60*60*1000),
+      url: baseurl+'/upload'
+    }, onResponse);
     var form = httpRequest.form();
     form.append('foo', 'hello');
     form.append('bar', 'there');
