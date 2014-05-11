@@ -1,4 +1,4 @@
-describe.only('when some big files start coming in, this adapter', function() {
+describe('when some big files start coming in, this adapter', function() {
 
   before(function () {
     // Set up a route which listens to uploads
