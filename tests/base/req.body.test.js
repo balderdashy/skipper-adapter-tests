@@ -68,7 +68,7 @@ describe('this adapter\'s impact on `req.body` ::', function() {
   });
 
 
-  it('should have uploaded a file to `suite.outputDir`', function(done) {
+  it('should have uploaded a file to expected location using provided `dirname` and `saveAs` options', function(done) {
 
     // Check that a file landed
     adapter.ls(suite.outputDir.path, function(err, filesThatLanded) {
