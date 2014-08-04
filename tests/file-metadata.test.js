@@ -18,6 +18,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
             logo: fsx.createReadStream( fixtures.files[1].path )
           },function (err, _metadata) {
             if (err) return cb(err);
+            assert(_.isArray(_metadata), 'metadata should be an array, instead it is:'+require('util').inspect(_metadata, false, null));
             metadataAboutUploadedFiles = metadataAboutUploadedFiles.concat(_metadata);
             cb();
           });
@@ -36,6 +37,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
             ]
           },function (err, _metadata) {
             if (err) return cb(err);
+            assert(_.isArray(_metadata), 'metadata should be an array, instead it is:'+require('util').inspect(_metadata, false, null));
             metadataAboutUploadedFiles = metadataAboutUploadedFiles.concat(_metadata);
             cb();
           });
@@ -44,7 +46,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
 
     it('should be an object', function (){
       _.each(metadataAboutUploadedFiles, function (obj){
-        assert.equal(typeof obj, 'object');
+        assert.equal(typeof obj, 'object', 'metadata should be an object, instead it is:'+require('util').inspect(obj, false, null));
       });
     });
 
@@ -68,7 +70,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
     describe('file descriptor (`fd`)', function () {
       it('should be a string', function (){
         _.each(metadataAboutUploadedFiles, function (obj){
-          assert.equal(typeof obj.fd, 'string');
+          assert.equal(typeof obj.fd, 'string', 'Metadata obj:'+require('util').inspect(obj, false, null));
         });
       });
       it('should be within the specified `dirname` if one was provided', function () {
@@ -112,8 +114,11 @@ describe('after uploading a file using this adapter, Skipper', function() {
       it('should default to a UUID as its basename if `saveAs` was not specified', function () {
         _.each(metadataAboutUploadedFiles, function (obj){
           if (obj.field === 'avatar') {
-            console.log(require('path').basename(obj.fd));
-            assert(require('path').basename(obj.fd).match(/^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+$/), require('util').format('Expected fd (%s) to be a UUID', obj.fd));
+
+            // Expect a UUID with an optional file extension suffix (i.e. `.jpeg`)
+            // '110ec58a-a0f2-4ac4-8393-c866d813b8d1.jpeg'
+            var UUID_REGEXP = /^[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9]+(\.[a-zA-Z0-9]*)?$/;
+            assert(require('path').basename(obj.fd).match(UUID_REGEXP), require('util').format('Expected fd (%s) to be a UUID', obj.fd));
           }
         });
       });
@@ -150,7 +155,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
  */
 function uploadFiles(fields, cb) {
   // console.log('---- BEGIN NEW REQUEST ----');
-  var httpRequest = request.post(baseurl+'/upload', onResponse);
+  var httpRequest = request.post(baseurl+'/upload_metadata_test', onResponse);
   var form = _.reduce(fields, function (form,value,fieldName){
     if (_.isArray(value)) {
       _.each(value, function (_item) {
@@ -170,10 +175,7 @@ function uploadFiles(fields, cb) {
       if (_.isString(body)) {
         try { body = JSON.parse(body); } catch (e){}
       }
-
-      // _.each(body, function (obj){
-      //   console.log('--------******---------','\n',obj);
-      // });
+      // console.log('\n--------******---------', body);
 
       cb(err, body);
     }
@@ -184,7 +186,7 @@ function uploadFiles(fields, cb) {
 
 function bindTestRoute() {
   // Set up a route which listens to uploads
-  app.post('/upload', function (req, res, next) {
+  app.post('/upload_metadata_test', function (req, res, next) {
     assert(_.isFunction(req.file));
 
 

@@ -28,10 +28,11 @@ describe('this adapter\'s impact on `req.body` ::', function() {
       bodyParamsThatWereAccessible = _.cloneDeep(req.body);
 
       req.file('avatar')
-        .upload(adapter.receive({
+        .upload({
+          adapter: adapter,
           dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
-          filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
-        }), function(err, files) {
+          saveAs: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
+        }, function(err, files) {
           if (err) res.send(500, err);
           res.send(200);
         });
@@ -70,12 +71,12 @@ describe('this adapter\'s impact on `req.body` ::', function() {
   it('should have uploaded a file to `suite.outputDir`', function(done) {
 
     // Check that a file landed
-    adapter.ls(suite.outputDir.path, function(err, filesUploaded) {
+    adapter.ls(suite.outputDir.path, function(err, filesThatLanded) {
       if (err) return done(err);
-      assert(filesUploaded.length === 1, 'a file should exist at ' + suite.outputDir.path);
+      assert(filesThatLanded.length === 1, 'one file should exist at ' + suite.outputDir.path + ' -- but instead there are '+filesThatLanded.length);
 
       // Check that its contents are correct
-      adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function(err, uploadedFileContents) {
+      adapter.read(path.join(suite.outputDir.path, filesThatLanded[0]), function(err, uploadedFileContents) {
         if (err) return done(err);
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());

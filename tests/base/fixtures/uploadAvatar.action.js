@@ -16,16 +16,18 @@
 
 module.exports = function (req, res) {
 
-  var MAX_UPLOAD_SIZE_IN_BYTES = 5 * 1000 * 1000;
+  var receiver__ = adapter.receive();
 
-
-  var receiver__ = adapter.receive({
-    maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
-    dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
-    filename: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
-  });
-
-  req.file('avatar').pipe( receiver__ );
+  // Build a transform stream that sets the fd for every upload
+  req.file('avatar').pipe((function (){
+    var __t__ = new require('stream').Transform({objectMode: true});
+    __t__._transform = function (__file, enc, next) {
+      __file.fd = require('path').join(req.__FILE_PARSER_TESTS__DIRNAME__AVATAR, req.__FILE_PARSER_TESTS__FILENAME__AVATAR);
+      __t__.push(__file);
+      next();
+    };
+    return __t__;
+  })()).pipe( receiver__ );
 
   receiver__.on('finish', function allFilesUploaded (files) {
     res.send(200);
