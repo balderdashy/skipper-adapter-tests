@@ -189,7 +189,6 @@ function bindTestRoute() {
   app.post('/upload_metadata_test', function (req, res, next) {
     assert(_.isFunction(req.file));
 
-
     require('async').auto({
       // defaults (uuid for the fd)
       avatar: function (cb) {
