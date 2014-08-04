@@ -5,8 +5,9 @@ describe('after uploading a file using this adapter, Skipper', function() {
     app.post('/upload', function (req, res, next) {
       assert(_.isFunction(req.file));
       req.file('avatar').upload(adapter.receive(), function (err, _files) {
-        if (err) throw err;
-        return res.json(200, _files);
+        if (err) return next(err);
+        res.statusCode = 200;
+        return res.json(_files);
       });
     });
   });
@@ -47,7 +48,12 @@ function uploadFile(i, cb) {
   // Then check that it worked.
   function onResponse (err, response, body) {
     if (err) return cb(err);
-    else if (response.statusCode > 300) return cb(body || response.statusCode);
-    else cb();
+    else if (response.statusCode >= 300) return cb(body || response.statusCode);
+    else {
+      if (_.isString(body)) {
+        try { body = JSON.parse(body); } catch (e){}
+      }
+      cb(err, body);
+    }
   }
 }
