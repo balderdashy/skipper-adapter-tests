@@ -4,6 +4,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var _ = require('lodash');
 var Mocha = require('mocha');
 
 
@@ -25,11 +26,11 @@ module.exports = function runner (opts) {
   // Instantiate adapter
   global['adapter'] = global['adapter'](opts);
 
-  var mocha = new Mocha({
+  var mocha = new Mocha(_.extend({
     bail: true,
     timeout: 180000, // (3 minutes- b/c network you know)
     reporter: 'spec'
-  });
+  }, opts.mocha||{}));
 
   // Setup `before` and `after` lifecycle to keep them servers flowin'
   mocha.addFile(path.resolve(__dirname, path.join('lib','lifecycle')));
