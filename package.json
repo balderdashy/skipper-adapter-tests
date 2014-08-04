@@ -32,7 +32,7 @@
     "mocha": "~1.18.2",
     "lodash": "~2.4.1",
     "fs-extra": "~0.8.1",
-    "skipper": "~0.5.0",
+    "skipper": "~0.5.1",
     "connect": "~2.15.0",
     "request": "~2.34.0",
     "routification": "0.0.1",
