@@ -6,6 +6,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "bin": {
+    "skipper-adapter-tests": "./bin/skipper-adapter-tests.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/balderdashy/skipper-adapter-tests.git"
@@ -35,6 +38,7 @@
     "routification": "0.0.1",
     "temporary": "0.0.8",
     "express": "~4.1.1",
-    "async": "^0.8.0"
+    "async": "~0.8.0",
+    "minimist": "~0.2.0"
   }
 }

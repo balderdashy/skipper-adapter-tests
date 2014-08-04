@@ -18,6 +18,7 @@ var Mocha = require('mocha');
 
 module.exports = function runner (opts) {
   opts = opts || {};
+  console.log('OPTS:',opts);
 
 
   // Expose adapter as a global
