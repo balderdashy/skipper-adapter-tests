@@ -55,7 +55,7 @@ describe('req.file(...).pipe(...) ::', function() {
       assert(filesUploaded.length === 1);
 
       // Check that its contents are correct
-      adapter.read(path.join(suite.outputDir.path, filesUploaded[0]), function (err, uploadedFileContents) {
+      adapter.read(filesUploaded[0], function (err, uploadedFileContents) {
         if (err) return done(err);
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());

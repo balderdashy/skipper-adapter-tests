@@ -76,7 +76,7 @@ describe('this adapter\'s impact on `req.body` ::', function() {
       assert(filesThatLanded.length === 1, 'one file should exist at ' + suite.outputDir.path + ' -- but instead there are '+filesThatLanded.length);
 
       // Check that its contents are correct
-      adapter.read(path.join(suite.outputDir.path, filesThatLanded[0]), function(err, uploadedFileContents) {
+      adapter.read(filesThatLanded[0], function(err, uploadedFileContents) {
         if (err) return done(err);
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
         assert(uploadedFileContents.toString() === srcFileContents.toString());
