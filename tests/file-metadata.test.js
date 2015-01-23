@@ -46,7 +46,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
 
     it('should be an object', function (){
       _.each(metadataAboutUploadedFiles, function (obj){
-        assert(_.isObject(obj), 'metadata should be an object, instead it is:'+require('util').inspect(obj, false, null));
+        assert(_.isObject(obj), 'metadata should be an object, instead it is:'+require('util').inspect(obj, false, null)+'\nHere is the entire array:\n'+require('util').inspect(metadataAboutUploadedFiles, false, null));
       });
     });
 
