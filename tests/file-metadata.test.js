@@ -75,6 +75,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
       });
       it('should be within the specified `dirname` if one was provided', function () {
         _.each(metadataAboutUploadedFiles, function (obj){
+          assert(_.isObject(obj), 'expected object, got:'+require('util').inspect(obj, false, null));
           if (obj.field === 'avatar') {
             var expectedDirname = '/tmp/avatar-uploads';
             assert(obj.fd.indexOf(expectedDirname) === 0, require('util').format('Expected fd (%s) to be inside the specified dirname (%s)', obj.fd, expectedDirname));
