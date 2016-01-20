@@ -29,16 +29,16 @@
   },
   "homepage": "https://github.com/balderdashy/skipper-adapter-tests",
   "dependencies": {
-    "mocha": "~1.18.2",
+    "mocha": "~2.2.5",
     "lodash": "~2.4.1",
-    "fs-extra": "~0.8.1",
-    "skipper": "~0.5.1",
+    "fs-extra": "~0.23.1",
+    "skipper": "~0.5.5",
     "connect": "~2.15.0",
-    "request": "~2.34.0",
+    "request": "~2.61.0",
     "routification": "0.0.1",
     "temporary": "0.0.8",
-    "express": "~4.1.1",
-    "async": "~0.8.0",
-    "minimist": "~0.2.0"
+    "express": "~4.13.3",
+    "async": "~1.4.2",
+    "minimist": "~1.2.0"
   }
 }
