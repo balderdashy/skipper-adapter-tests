@@ -2,7 +2,7 @@ describe('under a bit of load, this adapter', function() {
 
   before(function () {
     // Set up a route which listens to uploads
-    app.post('/upload', function (req, res, next) {
+    app.post('/upload_tons', function (req, res, next) {
       assert(_.isFunction(req.file));
       req.file('avatar').upload(adapter.receive(), function (err, files) {
         if (err) throw err;
@@ -37,7 +37,7 @@ describe('under a bit of load, this adapter', function() {
  * form upload(s), checking that everything worked.
  */
 function uploadFile(i, cb) {
-  var httpRequest = request.post(baseurl+'/upload', onResponse);
+  var httpRequest = request.post(baseurl+'/upload_tons', onResponse);
   var form = httpRequest.form();
   form.append('foo', 'hello');
   form.append('bar', 'there');

@@ -2,7 +2,7 @@ describe('when some big files start coming in, this adapter', function() {
 
   before(function () {
     // Set up a route which listens to uploads
-    app.post('/upload', function (req, res, next) {
+    app.post('/upload_bigass', function (req, res, next) {
       assert(_.isFunction(req.file));
 
       // Disable underlying socket timeout
@@ -66,7 +66,7 @@ function toUploadAFile (MB) {
    */
   return function uploadFile(i, cb) {
     var httpRequest = request.post({
-      url: baseurl+'/upload'
+      url: baseurl+'/upload_bigass'
     }, onResponse);
     var form = httpRequest.form();
     form.append('foo', 'hello');
