@@ -35,11 +35,11 @@ describe('aborting a file in progress', function() {
     // the intended body, we don't have to recalculate the size manually.
     var body = [
       '--myawesomemultipartboundary\r\n',
-      'Content-Disposition: form-data; name="avatar"; filename="somefiletokeep.jpg"\r\n',
-      'Content-Type: image/jpeg\r\n',
+      'Content-Disposition: form-data; name="avatar"; filename="somefiletokeep.txt"\r\n',
+      'Content-Type: text/plain\r\n',
       'Content-Transfer-Encoding: binary\r\n',
       '\r\n',
-      new Buffer([66,66,66,66,66]),
+      new Buffer([ 115, 97, 105, 108, 115, 98, 111, 116, 52, 101, 118, 97 ]),
       '\r\n--myawesomemultipartboundary\r\n',
       'Content-Disposition: form-data; name="avatar"; filename="somefiletobeaborted.jpg"\r\n',
       'Content-Type: image/jpeg\r\n',
