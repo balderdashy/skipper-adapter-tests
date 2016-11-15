@@ -1,6 +1,6 @@
 {
   "name": "skipper-adapter-tests",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "Generic acceptance tests for Skipper adapters",
   "main": "index.js",
   "scripts": {
