@@ -11,7 +11,7 @@ describe('when using the "maxBytes" option', function() {
       res.setTimeout(0);
 
       req.file('avatar').upload(adapter.receive({
-        maxBytes: 2000000 // 2 MB
+        maxBytes: 6000000 // 6 MB
       }), function (err, files) {
         if (err) {
           return setTimeout(function() {
@@ -29,14 +29,14 @@ describe('when using the "maxBytes" option', function() {
 
     it('should allow uploads <= the maxBytes value', function(done) {
       this.slow(900000);// (15 minutes)
-      toUploadAFile(1)(0, function(err) {
+      toUploadAFile(1)(function(err) {
         return done(err);
       });
     });
 
     it('should not allow uploads > the maxBytes value', function(done) {
       this.slow(900000);// (15 minutes)
-      toUploadAFile(3)(0, function(err) {
+      toUploadAFile(10)(function(err) {
         if (err) {
           if (err == 'E_EXCEEDS_UPLOAD_LIMIT') {return done();}
           return done(err);
@@ -84,15 +84,18 @@ describe('when using the "maxBytes" option', function() {
       var form = httpRequest.form();
       form.append('foo', 'hello');
       form.append('bar', 'there');
-      var nonsenseFileToUpload = GENERATE_NONSENSE_FILE(500000);
+      var nonsenseFileToUpload;
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
-      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(500000);
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
-      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(500000);
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
-      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(500000);
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
-      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(500000);
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
+      form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
+      nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
       // Then check that it worked.
       function onResponse (err, response, body) {
@@ -121,7 +124,7 @@ function toUploadAFile (MB) {
    * A function which builds an HTTP request with attached multipart
    * form upload(s), checking that everything worked.
    */
-  return function uploadFile(i, cb) {
+  return function uploadFile(cb) {
     var httpRequest = request.post({
       url: baseurl+'/uploadmax'
     }, onResponse);
