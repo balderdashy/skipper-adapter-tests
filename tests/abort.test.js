@@ -1,6 +1,7 @@
 var _ = require('lodash');
+var async = require('async');
 describe('aborting a file in progress', function() {
-  this.timeout(1000);
+  this.timeout(10000);
   before(function () {
     // Set up a route which listens to uploads
     app.post('/upload_abort', function (req, res, next) {
@@ -12,7 +13,7 @@ describe('aborting a file in progress', function() {
       res.setTimeout(0);
 
       req.file('avatar').upload(adapter.receive({
-        maxBytes: 2000000 // 2 MB
+        maxBytes: 1000 * 1000 * 100 // 100 MB
       }), function (err, files) {
         if (err) {
           return setTimeout(function() {
@@ -30,31 +31,6 @@ describe('aborting a file in progress', function() {
   it('should not crash the server', function(done) {
     var http = require('http');
 
-    // Create the body in pieces.  We could just do a bunch of req.write() calls,
-    // but doing it this way lets us keep track of the content size so if we change
-    // the intended body, we don't have to recalculate the size manually.
-    var body = [
-      '--myawesomemultipartboundary\r\n',
-      'Content-Disposition: form-data; name="avatar"; filename="somefiletokeep.txt"\r\n',
-      'Content-Type: text/plain\r\n',
-      'Content-Transfer-Encoding: binary\r\n',
-      '\r\n',
-      new Buffer([ 115, 97, 105, 108, 115, 98, 111, 116, 52, 101, 118, 97 ]),
-      '\r\n--myawesomemultipartboundary\r\n',
-      'Content-Disposition: form-data; name="avatar"; filename="somefiletobeaborted.jpg"\r\n',
-      'Content-Type: image/jpeg\r\n',
-      'Content-Transfer-Encoding: binary\r\n',
-      '\r\n',
-      new Buffer([65,65,65,65,65]),
-      // Note that we don't need to finish the body with the closing boundary because
-      // we'll be aborting the request anyway
-    ];
-
-    // Calculate the content size.  We need to know this because if we send a Content-Length
-    // header with a too-small value, the server will think it has all the data before we
-    // have a chance to abort
-    var contentSize = _.reduce(body, function(memo,chunk){return memo+chunk.length;}, 0);
-
     // Set up the request options
     var options = {
       host: domain,
@@ -63,7 +39,7 @@ describe('aborting a file in progress', function() {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data;boundary=myawesomemultipartboundary',
-        'Content-Length': contentSize + 100
+        'Content-Length': 1000 * 1000 * 100 // Expect 100 megabytes
       }
     };
 
@@ -81,14 +57,34 @@ describe('aborting a file in progress', function() {
       return done();
     });
 
-    // Send the body one piece at a time
-    _.map(body, function(chunk) {req.write(chunk);});
+    // Make a series of req.write calls to start off a nice-looking multipart request,
+    // up to where to the file data should go.
+    var bodyBeforeFile = [
+      '--myawesomemultipartboundary\r\n',
+      'Content-Disposition: form-data; name="avatar"; filename="somefiletokeep.txt"\r\n',
+      'Content-Type: text/plain\r\n',
+      'Content-Transfer-Encoding: binary\r\n',
+      '\r\n',
+      new Buffer([ 115, 97, 105, 108, 115, 98, 111, 116, 52, 101, 118, 97 ]),
+      '\r\n--myawesomemultipartboundary\r\n',
+      'Content-Disposition: form-data; name="avatar"; filename="somefiletobeaborted.jpg"\r\n',
+      'Content-Type: image/jpeg\r\n',
+      'Content-Transfer-Encoding: binary\r\n',
+      '\r\n'
+    ];
+    _.each(bodyBeforeFile, function(chunk) {req.write(chunk);});
 
-    // Abort the request
+    // Now pump out 1mb worth of cash money ($)
+    req.write((new Buffer(1000 * 1000)).fill(36));
+
+    // Wait three seconds so that some of it maybe uploads,
+    // then abort the request
     setTimeout(function() {
       req.abort();
       req.end();
-    }, 100);
+    }, 3000);
+
+
   });
 
 });
