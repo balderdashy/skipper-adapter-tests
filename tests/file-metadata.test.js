@@ -1,3 +1,6 @@
+var _ = require('lodash');
+var path = require('path');
+
 describe('after uploading a file using this adapter, Skipper', function() {
 
   before(bindTestRoute);
@@ -5,8 +8,14 @@ describe('after uploading a file using this adapter, Skipper', function() {
   describe('each file metadata object', function () {
 
     var metadataAboutUploadedFiles = [];
+    var expectedFileSizes = {};
 
     before(function (done){
+
+      expectedFileSizes = _.reduce( fixtures.files, function(memo, file) {
+        memo[path.basename(file.path)] = file.size;
+        return memo;
+      }, {});
 
       // Do 2 requests at once to up the stakes a bit
       require('async').series([
@@ -27,13 +36,13 @@ describe('after uploading a file using this adapter, Skipper', function() {
           uploadFiles({
             foo: 'hello again',
             bar: 'there again',
-            avatar: fsx.createReadStream( fixtures.files[0].path ),
-            logo: fsx.createReadStream( fixtures.files[1].path ),
+            avatar: fsx.createReadStream( fixtures.files[2].path ),
+            logo: fsx.createReadStream( fixtures.files[3].path ),
             userFile: [
-              fsx.createReadStream( fixtures.files[2].path ),
-              fsx.createReadStream( fixtures.files[2].path ),
-              fsx.createReadStream( fixtures.files[3].path ),
-              fsx.createReadStream( fixtures.files[3].path )
+              fsx.createReadStream( fixtures.files[4].path ),
+              fsx.createReadStream( fixtures.files[5].path ),
+              fsx.createReadStream( fixtures.files[6].path ),
+              fsx.createReadStream( fixtures.files[7].path )
             ]
           },function (err, _metadata) {
             if (err) return cb(err);
@@ -61,8 +70,8 @@ describe('after uploading a file using this adapter, Skipper', function() {
     it('should have the original filename of the uploaded file', function (){
       _.each(metadataAboutUploadedFiles, function (obj){
         if (obj.field === 'avatar') {
-          var nameOfUploadedFile = require('path').basename(fixtures.files[0].path);
-          assert.equal(obj.filename, nameOfUploadedFile);
+          var nameOfUploadedFiles = [require('path').basename(fixtures.files[0].path), require('path').basename(fixtures.files[2].path)];
+          assert(_.contains(nameOfUploadedFiles, obj.filename));
         }
       });
     });
@@ -124,9 +133,9 @@ describe('after uploading a file using this adapter, Skipper', function() {
       });
     });
 
-    it.skip('should contain the file size', function (){
+    it('should contain the file size', function (){
       _.each(metadataAboutUploadedFiles, function (obj){
-        assert.equal(typeof obj.size, 'number');
+        assert.equal(obj.size, expectedFileSizes[obj.filename]);
       });
     });
 
