@@ -48,7 +48,7 @@ describe('aborting a file in progress', function() {
       // This callback should never be called, since the request
       // should end in an error after we abort it
       function(res) {
-        return done("The request should have returned an error!");
+        return done(new Error("The request should have triggered an error, but it didn\'t!"));
       }
     );
 
