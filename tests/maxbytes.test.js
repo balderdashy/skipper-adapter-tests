@@ -78,6 +78,16 @@ describe('when using the "maxBytes" option', function() {
 
     it('should not allow uploads > the maxBytes value', function(done) {
       this.slow(900000);// (15 minutes)
+
+      var httpRequest = request.post({
+        url: baseurl+'/uploadmax'
+      }, function onResponse (err, response, body) {
+        // Then check that it worked:
+        if (body == 'E_EXCEEDS_UPLOAD_LIMIT' && response.statusCode == 500) {return done();}
+        if (err) { return done(err); }
+        return done("Should have responded with the expected error!  Instead got status code "+response.statusCode+" and body: "+require('util').inspect(body,{depth:null}));
+      });
+
       var httpRequest = request.post({
         url: baseurl+'/uploadmax'
       }, onResponse);
@@ -97,11 +107,6 @@ describe('when using the "maxBytes" option', function() {
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
       nonsenseFileToUpload = GENERATE_NONSENSE_FILE(1000000);
       form.append('avatar', fsx.createReadStream( nonsenseFileToUpload.path ));
-      // Then check that it worked.
-      function onResponse (err, response, body) {
-        if (body == 'E_EXCEEDS_UPLOAD_LIMIT' && response.statusCode == 500) {return done();}
-        return done("Should have thrown an error!");
-      }
 
     });
 
