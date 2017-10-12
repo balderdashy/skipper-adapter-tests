@@ -2,14 +2,14 @@
  * Module dependencies
  */
 
-var Lifecycle = require('./helpers/lifecycle'),
-  Uploader = require('./helpers/uploader'),
-  _ = require('lodash'),
-  util = require('util'),
-  path = require('path'),
-  assert = require('assert'),
-  toValidateTheHTTPResponse = require('./helpers/toValidateTheHTTPResponse'),
-  fsx = require('fs-extra');
+var Lifecycle = require('./helpers/lifecycle');
+var Uploader = require('./helpers/uploader');
+var _ = require('@sailshq/lodash');
+var util = require('util');
+var path = require('path');
+var assert = require('assert');
+var toValidateTheHTTPResponse = require('./helpers/toValidateTheHTTPResponse');
+var fsx = require('fs-extra');
 
 
 // Fixtures

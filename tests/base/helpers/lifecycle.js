@@ -3,7 +3,7 @@
  */
 
 var fsx = require('fs-extra');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var tmp = require('temporary');
 var crypto = require('crypto');
 var path = require('path');

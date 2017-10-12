@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var path = require('path');
 
 describe('after uploading a file using this adapter, Skipper', function() {

@@ -3,7 +3,7 @@
  */
 
 var Request = require('request');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 
 
