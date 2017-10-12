@@ -1,5 +1,5 @@
 var _ = require('@sailshq/lodash');
-var async = require('async');
+
 describe('aborting a file in progress', function() {
   this.timeout(10000);
   before(function () {
