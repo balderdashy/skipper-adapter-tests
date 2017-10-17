@@ -85,7 +85,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
       it('should be within the specified `dirname` if one was provided', function () {
         _.each(metadataAboutUploadedFiles, function (obj){
           if (obj.field === 'avatar') {
-            var expectedDirname = '/tmp/avatar-uploads';
+            var expectedDirname = path.resolve('/','tmp','avatar-uploads');
             assert(obj.fd.indexOf(expectedDirname) === 0, require('util').format('Expected fd (%s) to be inside the specified dirname (%s)', obj.fd, expectedDirname));
           }
         });
@@ -100,7 +100,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
       it('should be within the specified `dirname` even if a string was passed in for `saveAs`', function () {
         _.each(metadataAboutUploadedFiles, function (obj){
           if (obj.field === 'logo') {
-            var expectedDirname = '/tmp';
+            var expectedDirname = path.resolve('/','tmp');
             assert(obj.fd.indexOf(expectedDirname) === 0, require('util').format('Expected fd (%s) to be inside the specified dirname (%s)', obj.fd, expectedDirname));
           }
         });
@@ -115,7 +115,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
       it('should be within the specified `dirname` even if a function is passed in for `saveAs`', function () {
         _.each(metadataAboutUploadedFiles, function (obj){
           if (obj.field === 'userFile') {
-            var expectedDirname = '/tmp/user-files';
+            var expectedDirname = path.resolve('/','tmp','user-files');
             assert(obj.fd.indexOf(expectedDirname) === 0, require('util').format('Expected fd (%s) to be inside the specified dirname (%s)', obj.fd, expectedDirname));
           }
         });
