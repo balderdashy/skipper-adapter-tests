@@ -68,10 +68,9 @@ module.exports = function() {
 
 
       // Lift Express server on 3000
-      public.server =
-        http.createServer(public.app)
-        .listen(3000)
-        .on('listening', done);
+      public.server = http.createServer(public.app)
+      .listen(3000)
+      .on('listening', done);
     },
 
     teardown: function() {
