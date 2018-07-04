@@ -31,14 +31,14 @@
   "dependencies": {
     "@sailshq/lodash": "^3.10.2",
     "async": "2.0.1",
-    "connect": "2.15.0",
-    "express": "4.1.2",
+    "connect": "2.30.2",
+    "express": "4.16.3",
     "fs-extra": "0.8.1",
     "minimist": "0.2.0",
-    "mocha": "1.18.2",
-    "request": "2.34.0",
+    "mocha": "1.21.5",
+    "request": "2.87.0",
     "routification": "0.0.1",
-    "skipper": "^0.8.2",
+    "skipper": "^0.8.5",
     "temporary": "0.0.8"
   }
 }
