@@ -81,16 +81,14 @@ describe('when using the "maxBytes" option', function() {
 
       var httpRequest = request.post({
         url: baseurl+'/uploadmax'
-      }, function onResponse (err, response, body) {
+      }, function (err, response, body) {
         // Then check that it worked:
         if (body == 'E_EXCEEDS_UPLOAD_LIMIT' && response.statusCode == 500) {return done();}
         if (err) { return done(err); }
-        return done("Should have responded with the expected error!  Instead got status code "+response.statusCode+" and body: "+require('util').inspect(body,{depth:null}));
-      });
+        return done(new Error("Should have responded with the expected error!  Instead got status code "+response.statusCode+" and body: "+require('util').inspect(body,{depth:null})));
+      });//_∏_
 
-      var httpRequest = request.post({
-        url: baseurl+'/uploadmax'
-      }, onResponse);
+      // Include attachments
       var form = httpRequest.form();
       form.append('foo', 'hello');
       form.append('bar', 'there');
