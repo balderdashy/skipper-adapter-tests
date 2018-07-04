@@ -35,7 +35,7 @@
     "express": "4.16.3",
     "fs-extra": "0.8.1",
     "minimist": "0.2.0",
-    "mocha": "1.21.5",
+    "mocha": "1.18.2",
     "request": "2.87.0",
     "routification": "0.0.1",
     "skipper": "^0.8.5",
