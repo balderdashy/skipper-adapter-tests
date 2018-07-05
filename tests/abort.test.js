@@ -1,6 +1,6 @@
 var _ = require('@sailshq/lodash');
 
-describe('aborting a file in progress', function() {
+describe.skip('aborting a file in progress', function() {
   this.timeout(10000);
   before(function () {
     // Set up a route which listens to uploads

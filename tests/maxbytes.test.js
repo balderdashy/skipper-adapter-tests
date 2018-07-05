@@ -1,4 +1,4 @@
-describe('when using the "maxBytes" option', function() {
+describe.skip('when using the "maxBytes" option', function() {
 
   before(function () {
     // Set up a route which listens to uploads
