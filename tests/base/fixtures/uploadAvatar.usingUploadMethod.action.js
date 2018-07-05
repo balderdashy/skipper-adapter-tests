@@ -16,8 +16,8 @@ module.exports = function (req, res) {
     maxBytes: MAX_UPLOAD_SIZE_IN_BYTES,
     dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
     saveAs: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
-  }, function (err, files) {
-    if (err) return res.send(500,err);
-    return res.send(200);
+  }, function (err) {
+    if (err) return res.status(500).send(err);
+    return res.sendStatus(200);
   });
 };

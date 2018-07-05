@@ -30,10 +30,10 @@ module.exports = function (req, res) {
   })()).pipe( receiver__ );
 
   receiver__.on('finish', function allFilesUploaded (files) {
-    res.send(200);
+    res.sendStatus(200);
   });
   receiver__.on('error', function unableToUpload (err) {
-    res.send(500, err);
+    res.status(500).send(err);
   });
 
 };
