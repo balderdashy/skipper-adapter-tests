@@ -5,7 +5,7 @@ describe('after uploading a file using this adapter, Skipper', function() {
 
   before(bindTestRoute);
 
-  describe.skip('each file metadata object', function () {
+  describe('each file metadata object', function () {
 
     var metadataAboutUploadedFiles = [];
     var expectedFileSizes = {};

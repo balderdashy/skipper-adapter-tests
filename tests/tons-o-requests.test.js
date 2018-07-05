@@ -1,4 +1,4 @@
-describe.skip('under a bit of load, this adapter', function() {
+describe('under a bit of load, this adapter', function() {
 
   before(function () {
     // Set up a route which listens to uploads

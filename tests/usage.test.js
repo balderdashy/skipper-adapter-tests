@@ -1,4 +1,4 @@
-describe.skip('this adapter', function() {
+describe('this adapter', function() {
 
   it('should allow a file to be uploaded', function(done) {
 
