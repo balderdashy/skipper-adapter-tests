@@ -33,8 +33,8 @@ describe('this adapter\'s impact on `req.body` ::', function() {
           dirname: req.__FILE_PARSER_TESTS__DIRNAME__AVATAR,
           saveAs: req.__FILE_PARSER_TESTS__FILENAME__AVATAR
         }, function(err, files) {
-          if (err) res.send(500, err);
-          res.send(200);
+          if (err) res.status(500).send(err);
+          res.sendStatus(200);
         });
     });
   });
