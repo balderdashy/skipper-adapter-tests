@@ -76,10 +76,15 @@ describe('this adapter\'s impact on `req.body` ::', function() {
       assert(filesThatLanded.length === 1, 'one file should exist at ' + suite.outputDir.path + ' -- but instead there are '+filesThatLanded.length);
 
       // Check that its contents are correct
-      adapter.read(filesThatLanded[0], function(err, uploadedFileContents) {
-        if (err) return done(err);
+      var uploadedFileContents = '';
+      adapter.read(filesThatLanded[0])
+      .on('data', function(buffer){
+        uploadedFileContents += buffer.toString();
+      })
+      .on('error', function(err){ return done(err); })
+      .on('end', function(){
         var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
-        assert(uploadedFileContents.toString() === srcFileContents.toString());
+        assert(uploadedFileContents === srcFileContents.toString());
         done();
       });
     });

@@ -53,10 +53,15 @@ describe('req.file(...).upload(...) ::', function() {
       assert(filesUploaded.length === 1);
 
       // Check that its contents are correct
-      var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
-      adapter.read(filesUploaded[0], function (err, uploadedFileContents) {
-        if (err) return done(err);
-        assert(uploadedFileContents.toString() === srcFileContents.toString());
+      var uploadedFileContents = '';
+      adapter.read(filesUploaded[0])
+      .on('data', function(buffer){
+        uploadedFileContents += buffer.toString();
+      })
+      .on('error', function(err){ return done(err); })
+      .on('end', function(){
+        var srcFileContents = fsx.readFileSync(suite.srcFiles[0].path);
+        assert(uploadedFileContents === srcFileContents.toString());
         done();
       });
     });
