@@ -1,4 +1,4 @@
-describe('when using the "maxBytes" option', function() {
+describe.skip('when using the "maxBytes" option', function() {
 
   before(function () {
     // Set up a route which listens to uploads
@@ -15,9 +15,8 @@ describe('when using the "maxBytes" option', function() {
       }), function (err, files) {
         if (err) {
           return setTimeout(function() {
-            res.statusCode = 500;
-            return res.send(err.code);
-          },100);
+            return res.status(500).send(err.code);
+          }, 100);
         }
         res.statusCode = 200;
         return res.end();
@@ -38,10 +37,10 @@ describe('when using the "maxBytes" option', function() {
       this.slow(900000);// (15 minutes)
       toUploadAFile(10)(function(err) {
         if (err) {
-          if (err == 'E_EXCEEDS_UPLOAD_LIMIT') {return done();}
+          if (err === 'E_EXCEEDS_UPLOAD_LIMIT') { return done(); }
           return done(err);
         }
-        return done("Should have thrown an error!");
+        return done(new Error("Should have thrown an error!"));
       });
     });
 
